@@ -157,11 +157,11 @@ if __name__ == "__main__":
         try:
             while True:
                 try:
-                    if len(sys.argv) > 1:
-                        Id_Provincia = sys.argv[1]
-                    #Id_Provincia = "5"
+                    #if len(sys.argv) > 1:
+                        #Id_Provincia = sys.argv[1]
+                    Id_Provincia = "5"
                     mycursor = mydb.cursor()
-                    sql = "SELECT url, url_rss, id_provincia FROM portales where id_provincia = "+Id_Provincia+""
+                    sql = "SELECT url, id_provincia FROM portales where id_provincia = "+Id_Provincia+""
                     mycursor.execute(sql)
                     sql = mycursor.fetchall()
                     for portal in sql:

@@ -11,14 +11,14 @@ from bs4 import BeautifulSoup
 mydb = mysql.connector.connect(
   host="10.3.0.125",
   port="3307",
-  database="test_portales",
+  database="portales_dominicana",
   user="eze_ellena",
   password="L9vMKWedYEzcBxdy"
 )
 mydbEze = mysql.connector.connect(
   host="10.3.0.125",
   port="3307",
-  database="test_portales",
+  database="portales_dominicana",
   user="eze_ellena",
   password="L9vMKWedYEzcBxdy"
 )

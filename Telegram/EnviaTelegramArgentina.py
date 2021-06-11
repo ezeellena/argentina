@@ -52,7 +52,7 @@ if __name__ == '__main__':
             while True:
                 try:
                     if len(sys.argv) > 1:
-                        Id_Provincia = sys.argv[1]
+                        terminacion_id = sys.argv[1]
                     time.sleep(10)
                     GruposDeTelegram = requests.get("http://167.86.120.98:6060/GrupoCanal").json()
 

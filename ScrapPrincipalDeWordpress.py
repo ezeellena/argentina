@@ -8,12 +8,6 @@ import requests
 import mysql.connector
 from bs4 import BeautifulSoup
 
-"""
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                      'Server=localhost;'
-                      'Database=ScraperNoticias;'
-                      'Trusted_Connection=yes;')
-"""
 conn = mysql.connector.connect(
   host="167.86.120.98",
   port="3307",
@@ -183,6 +177,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print("")
             for portal in todo:
+
                 #if "puertonorteok.com" in portal[0]:
                 try:
                     headers = {
@@ -190,104 +185,103 @@ if __name__ == "__main__":
                                       'Firefox/55.0'}
                     links = get_all_website_links(portal[5])
                     links = list(links)
+                    format_strings = ','.join(['%s'] * len(links))
+                    try:
+                        mycursor = conn.cursor()
+                        mycursor.execute("SELECT * FROM noticias_enviadas_wordpress where link IN (%s)" % format_strings,
+                                         tuple(links))
+                        innoticia = mycursor.fetchall()
+                        linkbasededatos = []
+                        for j in innoticia:
+                            linkbasededatos.append(j[0])
+                        for i in links[:]:
+                            if i in linkbasededatos:
+                                links.remove(i)
+                    except Exception as e:
+                        print("")
+
+
+
+
                     for link in links:
+                        response = requests.get(link, headers=headers).text
                         try:
-                            mycursor = conn.cursor()
-                            innoticia = "SELECT * FROM noticias_enviadas_wordpress where link = '" + link + "'"
-                            mycursor.execute(innoticia)
-                            innoticia = mycursor.fetchall()
+                            Titulo = obtenerTitulo(response)
                         except Exception as e:
-                            print("")
+                            print("No se pudo obtener el Título ", e)
                         try:
-                            mycursor = conn.cursor()
-                            innoticiaW = "SELECT * FROM noticias_basuras_wordpress where link = '" + link + "'"
-                            mycursor.execute(innoticiaW)
-                            innoticiaW = mycursor.fetchall()
+                            Descripcion = obtenerDescripcion(response)
+                            if Descripcion == "" or Descripcion == '':
+                                Descripcion = "."
+                            if not Descripcion:
+                                Descripcion = "."
                         except Exception as e:
-                            print("")
-                        cantidad = len(innoticia)
-                        cantidad2 = len(innoticiaW)
-                        if cantidad != 0 or cantidad2 != 0:
-                            print("ya se publico")
+                            print("No se pudo obtener la Descripcion ", e)
+                        try:
+                            Imagen = obtenerImagen(response)
+                        except Exception as e:
+                            print("No se pudo obtener la Imagen ", e)
+                        try:
+                            TextoCompleto = obtenerTextoCompleto(response,portal[6])
+                        except Exception as e:
+                            print("No se pudo obtener la Imagen ", e)
+                        try:
+                            #Categoria = obtenerCategoria(response)
+                            Categoria = 'actualidad'
+                        except Exception as e:
+                            print("No se pudo obtener la Categoria ", e)
+                            Categoria = 'actualidad'
+                        try:
+                            #Tags = obtenerTags(response)
+
+                            Tags = 'Actualidad'
+                        except Exception as e:
+                            print("No se pudo obtener el Tag ", e)
+                            Tags = 'Actualidad'
+
+                        if not Titulo or not Descripcion or not Imagen or not TextoCompleto:
+                            try:
+                                mycursor = conn.cursor()
+                                sql = "INSERT INTO noticias_basuras_wordpress (portal,link,nombreWordPress) VALUES (%s, %s, %s)"
+                                val = (portal[5], link, url)
+                                mycursor.execute(sql, val)
+                                conn.commit()
+                            except Exception as e:
+                                print("Error al Obtener portales ", e)
+                            continue
                         else:
-                            response = requests.get(link, headers=headers).text
                             try:
-                                Titulo = obtenerTitulo(response)
-                            except Exception as e:
-                                print("No se pudo obtener el Título ", e)
-                            try:
-                                Descripcion = obtenerDescripcion(response)
-                                if Descripcion == "" or Descripcion == '':
-                                    Descripcion = "."
-                                if not Descripcion:
-                                    Descripcion = "."
-                            except Exception as e:
-                                print("No se pudo obtener la Descripcion ", e)
-                            try:
-                                Imagen = obtenerImagen(response)
-                            except Exception as e:
-                                print("No se pudo obtener la Imagen ", e)
-                            try:
-                                TextoCompleto = obtenerTextoCompleto(response,portal[6])
-                            except Exception as e:
-                                print("No se pudo obtener la Imagen ", e)
-                            try:
-                                #Categoria = obtenerCategoria(response)
-                                Categoria = 'actualidad'
-                            except Exception as e:
-                                print("No se pudo obtener la Categoria ", e)
-                                Categoria = 'actualidad'
-                            try:
-                                #Tags = obtenerTags(response)
+                                user = portal[1]
+                                pythonapp = portal[3]
+                                url = portal[4]
+                                data_string = user + ':' + pythonapp
+                                token = base64.b64encode(data_string.encode())
+                                headers = {'Authorization': 'Basic ' + token.decode('utf-8')}
+                                imgsrc = Imagen
+                                post = {'date': str(datetime.today()),
+                                        'title': Titulo,
+                                        'slug': 'rest-api-1',
+                                        'status': 'publish',
+                                        'content': Descripcion + '\n\n<img align="middle" src='+ imgsrc + '>\n' + TextoCompleto,
+                                        'author': '1',
+                                        'format': 'standard',
+                                        'post_tag': Tags,
+                                        'category': Categoria
+                                        }
+                                r = requests.post(url + '/posts', headers=headers, json=post)
 
-                                Tags = 'Actualidad'
-                            except Exception as e:
-                                print("No se pudo obtener el Tag ", e)
-                                Tags = 'Actualidad'
+                                print('Your post is published on ' + json.loads(r.content.decode('utf-8'))['link'])
 
-                            if not Titulo or not Descripcion or not Imagen or not TextoCompleto:
                                 try:
                                     mycursor = conn.cursor()
-                                    sql = "INSERT INTO noticias_basuras_wordpress (portal,link,nombreWordPress) VALUES (%s, %s, %s)"
-                                    val = (portal[5], link, url)
+                                    sql = "INSERT INTO noticias_enviadas_wordpress (link, titulo, descripcion,tema,campaña,nombreWordPress) VALUES (%s, %s, %s, %s, %s, %s)"
+                                    val = (link, Titulo,Descripcion,"","",url)
                                     mycursor.execute(sql, val)
                                     conn.commit()
                                 except Exception as e:
                                     print("Error al Obtener portales ", e)
-                                continue
-                            else:
-                                try:
-                                    user = portal[1]
-                                    pythonapp = portal[3]
-                                    url = portal[4]
-                                    data_string = user + ':' + pythonapp
-                                    token = base64.b64encode(data_string.encode())
-                                    headers = {'Authorization': 'Basic ' + token.decode('utf-8')}
-                                    imgsrc = Imagen
-                                    post = {'date': str(datetime.today()),
-                                            'title': Titulo,
-                                            'slug': 'rest-api-1',
-                                            'status': 'publish',
-                                            'content': Descripcion + '\n\n<img align="middle" src='+ imgsrc + '>\n' + TextoCompleto,
-                                            'author': '1',
-                                            'format': 'standard',
-                                            'post_tag': Tags,
-                                            'category': Categoria
-                                            }
-                                    r = requests.post(url + '/posts', headers=headers, json=post)
-
-                                    print('Your post is published on ' + json.loads(r.content.decode('utf-8'))['link'])
-
-                                    try:
-                                        mycursor = conn.cursor()
-                                        sql = "INSERT INTO noticias_enviadas_wordpress (link, titulo, descripcion,tema,campaña,nombreWordPress) VALUES (%s, %s, %s, %s, %s, %s)"
-                                        val = (link, Titulo,Descripcion,"","",url)
-                                        mycursor.execute(sql, val)
-                                        conn.commit()
-                                    except Exception as e:
-                                        print("Error al Obtener portales ", e)
-                                except Exception as e:
-                                    print("Error al Obtener portales ", e)
+                            except Exception as e:
+                                print("Error al Obtener portales ", e)
                 except Exception as e:
                     print("Error al Obtener portales ", e)
     except Exception as e:
