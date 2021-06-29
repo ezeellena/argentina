@@ -1,3 +1,5 @@
+import sys
+
 import feedparser as fp
 import json
 
@@ -118,8 +120,10 @@ def obtenerImagen(response):
 
 while True:
     try:
+        if len(sys.argv) > 1:
+            Id_Provincia = sys.argv[1]
         mycursor = mydb.cursor()
-        sql = "SELECT url, id_provincia,rss_feed FROM portales where rss_feed is not null"
+        sql = "SELECT url, id_provincia,rss_feed FROM portales where rss_feed is not null AND id_provincia = "+ Id_Provincia +""
         mycursor.execute(sql)
         sql = mycursor.fetchall()
         for portal in sql:
