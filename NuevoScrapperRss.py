@@ -399,4 +399,4 @@ while True:
                 #print("articles downloaded from", portal[0], " using newspaper, url: ", content.url)
 
     except Exception as e:
-        print("")
+        print("error",e)
