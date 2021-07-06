@@ -15,11 +15,11 @@ from datetime import datetime
 import mysql.connector
 from feedsearch import search
 mydb = mysql.connector.connect(
-  host="167.86.120.98",
-  port="3307",
-  database="test_portales",
-  user="eze_ellena",
-  password="c3hdyX8Jvnua5ZBr"
+    host="10.3.0.125",
+    port="3307",
+    database="portales",
+    user="root",
+    password="terminator9519"
 )
 def findfeed(site):
     raw = requests.get(site).text

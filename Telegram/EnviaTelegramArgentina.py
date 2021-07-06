@@ -6,11 +6,11 @@ import mysql.connector
 from tldextract import tldextract
 
 mydb = mysql.connector.connect(
-  host="167.86.120.98",
-  port="3307",
-  database="test_portales",
-  user="eze_ellena",
-  password="c3hdyX8Jvnua5ZBr"
+    host="10.3.0.125",
+    port="3307",
+    database="portales",
+    user="root",
+    password="terminator9519"
 )
 def enviar_noticias(resultado,ID_GRUPO,tema):
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
                     if len(sys.argv) > 1:
                         terminacion_id = sys.argv[1]
                     time.sleep(10)
-                    GruposDeTelegram = requests.get("http://167.86.120.98:6060/GrupoCanal").json()
+                    GruposDeTelegram = requests.get("http://stg.kernelinformatica.com.ar:5050/GrupoCanal").json()
 
                     for Grupo in GruposDeTelegram["data"]:
                         Provincias = []
@@ -70,11 +70,11 @@ if __name__ == '__main__':
                             for tema in Grupo["temas"]:
                                 try:
 
-                                    sql_select_Query = "SELECT link, titulo, copete, medio FROM todas_las_noticias " \
+                                    sql_select_Query = "SELECT link, titulo, copete, medio FROM todas_las_noticias_nuevas " \
                                          "WHERE (titulo like '%"+tema["descripcion"]+"%' " \
                                         "or copete like '%"+tema["descripcion"]+"%' " \
                                         "or link like '%"+tema["descripcion"]+"%'  ) " \
-                                       "and provincia in ("+ prov +") and link not in (select link from noticias_enviadas  " \
+                                       "and id_provincia in ("+ prov +") and link not in (select link from noticias_enviadas  " \
                                         "WHERE id_grupo = '"+ ID_GRUPO+"' and tema = '"+tema["descripcion"]+"')"
 
                                     cursor = mydb.cursor()

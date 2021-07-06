@@ -24,6 +24,8 @@ python3 EnviaTelegramArgentina.py 57 > /dev/null 2>&1 &
 python3 EnviaTelegramArgentina.py 87 > /dev/null 2>&1 &
 python3 EnviaTelegramArgentina.py 34 > /dev/null 2>&1 &
 
+
+
 python3 NuevoScrapperRss.py 1 > /dev/null 2>&1 &
 python3 NuevoScrapperRss.py 2 > /dev/null 2>&1 &
 python3 NuevoScrapperRss.py 3 > /dev/null 2>&1 &
@@ -48,4 +50,41 @@ python3 NuevoScrapperRss.py 21 > /dev/null 2>&1 &
 python3 NuevoScrapperRss.py 22 > /dev/null 2>&1 &
 python3 NuevoScrapperRss.py 23 > /dev/null 2>&1 &
 python3 NuevoScrapperRss.py 24 > /dev/null 2>&1 &
+
+
+
+
+python3 NuevoScrapperRss_Dominicana.py 1 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 2 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 3 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 4 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 5 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 6 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 7 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 8 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 9 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 10 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 11 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 12 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 13 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 14 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 15 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 16 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 17 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 18 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 19 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 20 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 21 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 22 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 23 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 24 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 25 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 26 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 27 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 28 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 29 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 30 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 31 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 32 > /dev/null 2>&1 &
+python3 NuevoScrapperRss_Dominicana.py 33 > /dev/null 2>&1 &
 
