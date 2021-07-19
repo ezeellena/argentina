@@ -57,7 +57,8 @@ while True:
                     sql = mycursor.fetchall()
                     mydb.commit()
                     if len(sql) == 0:
-                        linkNoticia = r"https://www.facebook.com/ads/library/?id=" + str(Identificador)
+                        linkNoticia = r"https://www.face" \
+                                      r"book.com/ads/library/?id=" + str(Identificador)
 
                         mensaje = "Identificador: " + str(Identificador) + "\n\n" + "Persona: " \
                                                                                "" + persona + "\n\n" + "Estado: " + estado_post + "\n\n" \
