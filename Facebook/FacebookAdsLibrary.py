@@ -1,4 +1,6 @@
 import json
+from datetime import datetime
+from random import random
 
 import mysql.connector
 import requests
@@ -15,12 +17,37 @@ mydb = mysql.connector.connect(
     password="terminator9519"
 )
 
+
+asleep = [1,2,3,4,5,6,7,8,9,10]
+ugente = []
+
+print("paso 0")
+agent = open('uagent.txt')
+lagent = agent.readline()
+while lagent != '':
+    ugente.append(lagent)
+    lagent = agent.readline()
+proxy = []
+proxis = open('proxies.txt')
+lproxy = proxis.readline()
+
+while lproxy != '':
+    proxy.append('<'+lproxy[:-1]+'>')
+    lproxy = proxis.readline()
+
+
 while True:
     with open('data.json') as file:
         data = json.load(file)
         data = list(data)
     chrome_path = r"C:\Users\ezequ\Desktop\Santa Fe\dominicana-master\Facebook\chromedriver.exe"
     ID_GRUPO = "-1001569021391"
+    webdriver.DesiredCapabilities.CHROME['proxy'] = {
+        "httpProxy": random.choice(proxy),
+        "ftpProxy": random.choice(proxy),
+        "sslProxy": random.choice(proxy),
+        "proxyType": "MANUAL",
+    }
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
@@ -35,7 +62,9 @@ while True:
             driver.maximize_window()
             linkpagina = "https://www.facebook.com/ads/library/?active_status=all&ad_type=political_and_issue_ads&country=AR&view_all_page_id=" + \
                          info["Identificador_Pagina"] + ""
-            driver.get(linkpagina)
+            sleep(random.choice(asleep))
+            anuncios = driver.find_elements_by_class_name("_99s5")
+            sleep(random.choice(asleep))
 
             #driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
             # sleep(3)
@@ -64,15 +93,15 @@ while True:
                         mensaje = "Identificador: " + str(Identificador) + "\n\n" + "Persona: " \
                                                                                "" + persona + "\n\n" + "Estado: " + estado_post + "\n\n" \
                                   + "Post: " + texto_post.text + "\n\n" "Ver más en ->" + linkNoticia
-
+                        fecha_insert = str(datetime.datetime.now())
 
                         try:
                             texto = texto_post.text
                             estado = estado_post
                             Identificador = str(Identificador)
                             mycursor = mydb.cursor()
-                            sql = "INSERT INTO FacebookAds (Identificador,Link,persona,texto_post,estado_post) VALUES (%s,%s,%s,%s,%s) "
-                            val = (Identificador, linkNoticia, persona, texto, estado)
+                            sql = "INSERT INTO FacebookAds (Identificador,Link,persona,texto_post,estado_post) VALUES (%s,%s,%s,%s,%s,%s) "
+                            val = (Identificador, linkNoticia, persona, texto, estado, fecha_insert)
                             mycursor.execute(sql, val)
                             mydb.commit()
                             requests.post('https://api.telegram.org/' + url_api,
@@ -84,5 +113,5 @@ while True:
             print("error al ejecutar codigo " + str(e))
             continue
     driver.close()
-    sleep(2)
+    sleep(random.choice(asleep))
 
