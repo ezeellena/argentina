@@ -20,7 +20,7 @@ while True:
         data = json.load(file)
         data = list(data)
     chrome_path = r"C:\Users\ezequ\Desktop\Santa Fe\dominicana-master\Facebook\chromedriver.exe"
-    ID_GRUPO = "-505412510"
+    ID_GRUPO = "-1001569021391"
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
