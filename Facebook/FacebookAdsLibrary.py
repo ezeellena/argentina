@@ -19,15 +19,16 @@ while True:
     with open('data.json') as file:
         data = json.load(file)
         data = list(data)
+    chrome_path = r"C:\Users\ezequ\Desktop\Santa Fe\dominicana-master\Facebook\chromedriver.exe"
+    ID_GRUPO = "-505412510"
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    driver = webdriver.Chrome(chrome_path, chrome_options=options)
     for info in data:
         try:
             url_api = "bot1877979395:AAGlnhcH2WJp71kwzkPkpkdfl9AbSgTHbOk/sendMessage"
-            chrome_path = r"C:\Users\ezequ\Desktop\Santa Fe\dominicana-master\Facebook\chromedriver.exe"
-            ID_GRUPO = "-1001569021391"
-            options = webdriver.ChromeOptions()
-            options.add_argument('--headless')
-            options.add_argument('--disable-gpu')
-            driver = webdriver.Chrome(chrome_path, chrome_options=options)
+
             persona = info["Persona"]
             # cuenta hardcodeada
             driver.implicitly_wait(30)
@@ -63,8 +64,7 @@ while True:
                         mensaje = "Identificador: " + str(Identificador) + "\n\n" + "Persona: " \
                                                                                "" + persona + "\n\n" + "Estado: " + estado_post + "\n\n" \
                                   + "Post: " + texto_post.text + "\n\n" "Ver más en ->" + linkNoticia
-                        requests.post('https://api.telegram.org/' + url_api,
-                                      data={'chat_id': str(ID_GRUPO), 'text': mensaje})
+
 
                         try:
                             texto = texto_post.text
@@ -75,11 +75,14 @@ while True:
                             val = (Identificador, linkNoticia, persona, texto, estado)
                             mycursor.execute(sql, val)
                             mydb.commit()
+                            requests.post('https://api.telegram.org/' + url_api,
+                                          data={'chat_id': str(ID_GRUPO), 'text': mensaje})
                             print("insertó correctamente el link: " + linkNoticia + "")
                         except Exception as e:
                             print("error insert: " + str(e) + "")
-            driver.close()
-            sleep(2)
         except Exception as e:
-            print("error al ejecutar codigo "+  str(e))
+            print("error al ejecutar codigo " + str(e))
             continue
+    driver.close()
+    sleep(2)
+
